@@ -24,35 +24,3 @@ disp(['Done. Read ' num2str(NumProfiles) ' files.'])
 
 return
 
-function SkipMe=DoSkipChecks(fname,SkipList)
-
-    IamHidden=CheckHiddenStatus(fname);
-    OnSkipList=CheckSkipList(fname,SkipList);
-
-    if IamHidden || OnSkipList
-        SkipMe=true;
-    else
-        SkipMe=false;
-    end
-    
-return
-
-function IAmHidden=CheckHiddenStatus(fname)
-
-IAmHidden=strcmp(fname.name(1),'.');
-
-return
-
-function OnSkipList=CheckSkipList(fname,SkipList)
-
-OnSkipList=false;
-
-for i=1:length(SkipList)
-    if strcmpi(fname.name,SkipList{i})
-        OnSkipList=true;
-        disp(['Skipping ' fname.name '...']);
-    end
-end
-
-return
-
