@@ -2,48 +2,58 @@ function Data=ReadSSAFile(fname)
 
 fid=fopen(fname,'r');
 Data.FileName=''; %annoying. should switch to class to avoid initializing
-Data.Hdr=ReadHeader(fid);
+[Data.Hdr,Data.HdrLines]=ReadHeader(fid);
 
 l=0;
 while ~feof(fid)
-    l=l+1;
-    
-    if l==19
-        stop=1;
-    end
-    [Data.Voltage(l),Data.Reflectance(l),Data.SSA(l),Data.Depth(l),Data.Do(l),Data.Comments{l}]=ReadDataLine(fid);
+    l=l+1;    
+    [Data.Voltage(l),Data.Reflectance(l),Data.SSA(l),Data.Depth(l),Data.Do(l),Data.Comments{l},Data.DataLines{l}]=ReadDataLine(fid);
 end
 
 fclose(fid);
 
 return
 
-function Hdr=ReadHeader(fid)
+function [Hdr,Lines]=ReadHeader(fid)
 
 %note: this relies on the order of data and number of lines in the header staying the same. 
 
 % the CommaTrim commands can be removed if these are all removed from the
 % .csv files
 
-Hdr.t=ReadDateAndTime(fid);
-temp=strsplit(fgetl(fid),':'); Hdr.FieldCampaignName=strtrim(temp{2}); Hdr.FieldCampaignName=CommaTrim(Hdr.FieldCampaignName);
-temp=strsplit(fgetl(fid),':'); Hdr.PitID=strtrim(temp{2}); Hdr.PitID=CommaTrim(Hdr.PitID);
-temp=strsplit(fgetl(fid),':'); Hdr.UTMN=str2double(temp{2}); 
-temp=strsplit(fgetl(fid),':'); Hdr.UTME=str2double(temp{2});
-temp=strsplit(fgetl(fid),':'); Hdr.UTMZone=strtrim(temp{2}); Hdr.UTMZone=CommaTrim(Hdr.UTMZone);
-temp=strsplit(fgetl(fid),':'); Hdr.Instrument=strtrim(temp{2}); Hdr.Instrument=CommaTrim(Hdr.Instrument);
-temp=strsplit(fgetl(fid),':'); Hdr.Operator=strtrim(temp{2}); Hdr.Operator=CommaTrim(Hdr.Operator);
-temp=strsplit(fgetl(fid),':'); Hdr.Timing=strtrim(temp{2}); Hdr.Timing=CommaTrim(Hdr.Timing);
-temp=strsplit(fgetl(fid),':'); Hdr.Notes=strtrim(temp{2});  Hdr.Notes=CommaTrim(Hdr.Notes);
-temp=strsplit(fgetl(fid),':'); Hdr.SnowDepth_cm=str2double(temp{2});
+Lines={};
+
+i=1; [Hdr.t,Lines{i}]=ReadDateAndTime(fid);
+i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.FieldCampaignName=strtrim(temp{2}); Hdr.FieldCampaignName=CommaTrim(Hdr.FieldCampaignName);
+i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.PitID=strtrim(temp{2}); Hdr.PitID=CommaTrim(Hdr.PitID);
+i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.UTMN=str2double(temp{2}); 
+i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.UTME=str2double(temp{2});
+i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.UTMZone=strtrim(temp{2}); Hdr.UTMZone=CommaTrim(Hdr.UTMZone);
+i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.Instrument=strtrim(temp{2}); Hdr.Instrument=CommaTrim(Hdr.Instrument);
+i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.Operator=strtrim(temp{2}); Hdr.Operator=CommaTrim(Hdr.Operator);
+i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.Timing=strtrim(temp{2}); Hdr.Timing=CommaTrim(Hdr.Timing);
+i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.Notes=strtrim(temp{2});  Hdr.Notes=CommaTrim(Hdr.Notes);
+i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.SnowDepth_cm=str2double(temp{2});
+% temp=strsplit(fgetl(fid),':'); Hdr.PitID=strtrim(temp{2}); Hdr.PitID=CommaTrim(Hdr.PitID);
+% temp=strsplit(fgetl(fid),':'); Hdr.UTMN=str2double(temp{2}); 
+% temp=strsplit(fgetl(fid),':'); Hdr.UTME=str2double(temp{2});
+% temp=strsplit(fgetl(fid),':'); Hdr.UTMZone=strtrim(temp{2}); Hdr.UTMZone=CommaTrim(Hdr.UTMZone);
+% temp=strsplit(fgetl(fid),':'); Hdr.Instrument=strtrim(temp{2}); Hdr.Instrument=CommaTrim(Hdr.Instrument);
+% temp=strsplit(fgetl(fid),':'); Hdr.Operator=strtrim(temp{2}); Hdr.Operator=CommaTrim(Hdr.Operator);
+% temp=strsplit(fgetl(fid),':'); Hdr.Timing=strtrim(temp{2}); Hdr.Timing=CommaTrim(Hdr.Timing);
+% temp=strsplit(fgetl(fid),':'); Hdr.Notes=strtrim(temp{2});  Hdr.Notes=CommaTrim(Hdr.Notes);
+% temp=strsplit(fgetl(fid),':'); Hdr.SnowDepth_cm=str2double(temp{2});
+
 
 fgetl(fid); fgetl(fid); 
 
 return
 
-function t=ReadDateAndTime(fid)
+function [t,Line]=ReadDateAndTime(fid)
 
-temp=strsplit(fgetl(fid),':');
+Line=fgetl(fid);
+
+temp=strsplit(Line,':');
 DateString=strcat(temp{end-1}, temp{end});
 temp=strsplit(DateString,'T');
 temp{1}=strtrim(temp{1});
@@ -56,9 +66,11 @@ t=datenum(year,day,mon,hour,minute,0);
 
 return
 
-function [Voltage,Reflectance,SSA,Depth,Do,Comments]=ReadDataLine(fid)
+function [Voltage,Reflectance,SSA,Depth,Do,Comments,Line]=ReadDataLine(fid)
 
-temp=strsplit(fgetl(fid),',');
+Line=fgetl(fid);
+
+temp=strsplit(Line,',');
 Voltage=str2double(temp{1});
 Reflectance=str2double(temp{2});
 SSA=str2double(temp{3});

@@ -5,10 +5,6 @@ Files=dir(DataDirectory);
 NumProfiles=0;
 for i=1:length(Files)
     
-    if i==12
-        stop=1;
-    end
-
     SkipThisFile=DoSkipChecks(Files(i),SkipList);
     
     if ~SkipThisFile
