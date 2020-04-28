@@ -25,7 +25,10 @@ Lines={};
 
 i=1; [Hdr.t,Lines{i}]=ReadDateAndTime(fid);
 i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.FieldCampaignName=strtrim(temp{2}); Hdr.FieldCampaignName=CommaTrim(Hdr.FieldCampaignName);
-i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.PitID=strtrim(temp{2}); Hdr.PitID=CommaTrim(Hdr.PitID);
+i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.SampleID=strtrim(temp{2}); Hdr.SampleID=CommaTrim(Hdr.SampleID);
+
+a=strsplit(Hdr.SampleID,' '); Hdr.PitID=a{1}; Hdr.PitID=CommaTrim(Hdr.PitID);
+
 i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.UTMN=str2double(temp{2}); 
 i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.UTME=str2double(temp{2});
 i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.UTMZone=strtrim(temp{2}); Hdr.UTMZone=CommaTrim(Hdr.UTMZone);
@@ -34,16 +37,6 @@ i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.Operator=strtrim(te
 i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.Timing=strtrim(temp{2}); Hdr.Timing=CommaTrim(Hdr.Timing);
 i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.Notes=strtrim(temp{2});  Hdr.Notes=CommaTrim(Hdr.Notes);
 i=i+1; Lines{i}=fgetl(fid); temp=strsplit(Lines{i},':'); Hdr.SnowDepth_cm=str2double(temp{2});
-% temp=strsplit(fgetl(fid),':'); Hdr.PitID=strtrim(temp{2}); Hdr.PitID=CommaTrim(Hdr.PitID);
-% temp=strsplit(fgetl(fid),':'); Hdr.UTMN=str2double(temp{2}); 
-% temp=strsplit(fgetl(fid),':'); Hdr.UTME=str2double(temp{2});
-% temp=strsplit(fgetl(fid),':'); Hdr.UTMZone=strtrim(temp{2}); Hdr.UTMZone=CommaTrim(Hdr.UTMZone);
-% temp=strsplit(fgetl(fid),':'); Hdr.Instrument=strtrim(temp{2}); Hdr.Instrument=CommaTrim(Hdr.Instrument);
-% temp=strsplit(fgetl(fid),':'); Hdr.Operator=strtrim(temp{2}); Hdr.Operator=CommaTrim(Hdr.Operator);
-% temp=strsplit(fgetl(fid),':'); Hdr.Timing=strtrim(temp{2}); Hdr.Timing=CommaTrim(Hdr.Timing);
-% temp=strsplit(fgetl(fid),':'); Hdr.Notes=strtrim(temp{2});  Hdr.Notes=CommaTrim(Hdr.Notes);
-% temp=strsplit(fgetl(fid),':'); Hdr.SnowDepth_cm=str2double(temp{2});
-
 
 fgetl(fid); fgetl(fid); 
 
@@ -85,8 +78,14 @@ end
 return
 
 function str=CommaTrim(strc)
-    
-str=strc;
+
+if isempty(strc)
+    str='';
+    return
+else
+    str=strc;
+end
+
 while strcmp(str(end),',')
     str=str(1:end-1);
 end
