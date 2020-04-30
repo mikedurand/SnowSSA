@@ -9,10 +9,4 @@ These scripts are all in Matlab. Main usage envisioned is to read all .csv files
 
 Example use: plot all data vertical profiles, including  reflectance, SSA, and equivalent grain diameter:
 
-DataDirectory='./ssa_data/';
-SkipList={''};
-SSADataset=ReadSSADataset(DataDirectory,SkipList);
-NODATA=-9999;
-for i=1:length(SSADataset)     
-  plotSSA(SSADataset(i),NODATA)        
-end
+
