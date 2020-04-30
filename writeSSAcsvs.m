@@ -1,3 +1,7 @@
+% Data = writeSSAcsvs(SSADataset,WriteDataDirectory)
+%   by Mike, Spring 2020
+%
+% This function writes the SnowEx SSA formatted csv files
 function writeSSAcsvs(SSADataset,WriteDataDirectory)
 
 for i=1:length(SSADataset)

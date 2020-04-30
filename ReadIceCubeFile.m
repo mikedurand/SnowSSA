@@ -1,7 +1,7 @@
-% CalData=ReadIceCubeFile(fname)
+% [CalData, SampleData]=ReadIceCubeFile(fname)
 %    by Mike, Spring 2020
 %
-% This reads output from the IceCube SSA app, formatted with tab separation
+% This reads output from the A2 photonics IceCube SSA app, formatted with tab separation
 
 function [CalData,SampleData]=ReadIceCubeFile(fname)
 

@@ -1,3 +1,8 @@
+% Data = ReadSSAFile(fname)
+%   by Mike, Spring 2020
+%
+% This function reads the SnowEx SSA formatted csv files
+
 function Data=ReadSSAFile(fname)
 
 fid=fopen(fname,'r');
