@@ -24,7 +24,8 @@ for i=1:length(SSADataset)
         DataLine=[SSADataset(i).Voltage(k) SSADataset(i).Reflectance(k) SSADataset(i).SSA(k) SSADataset(i).Depth(k) SSADataset(i).Do(k)];
         
         j=j+1;
-        DataToWrite(j)={sprintf('%.1f,%.2f,%.0f,%.1f,%f',DataLine)};
+        %First 5: 1) signal (mv); 2) reflectance; 3) SSA; 4) Height 5) Do
+        DataToWrite(j)={sprintf('%.1f,%.2f,%.2f,%.0f,%.2f',DataLine)};
         if ~isempty(SSADataset(i).Comments{k})
             DataToWrite(j)={[DataToWrite{j} ',' SSADataset(i).Comments{k}]};
         end
