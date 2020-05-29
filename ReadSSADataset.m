@@ -6,6 +6,10 @@ NumProfiles=0;
 for i=1:length(Files)
         
     SkipThisFile=DoSkipChecks(Files(i),SkipList);
+    
+    if i==107
+        stop=1;
+    end
         
     if ~SkipThisFile
         

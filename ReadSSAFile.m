@@ -107,6 +107,10 @@ Reflectance=str2double(temp{2});
 SSA=str2double(temp{3});
 Depth=str2double(temp{4});
 Do=str2double(temp{5});
+if length(temp)>6
+    disp('Oops! More data fields than expected! Probably a comma in a comment...')
+end
+
 if length(temp)>5
     Comments=strtrim(temp{6}); 
 else
