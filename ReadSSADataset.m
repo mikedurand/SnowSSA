@@ -1,4 +1,4 @@
-function SSADataset=ReadSSADataset(DataDirectory,SkipList)
+function SSADataset=ReadSSADataset(DataDirectory,SkipList,Format)
 
 Files=dir(DataDirectory);
 
@@ -12,7 +12,7 @@ for i=1:length(Files)
         NumProfiles=NumProfiles+1;
         Name=[DataDirectory Files(i).name];
         disp(['Reading ' Files(i).name '...']);
-        SSADataset(NumProfiles)=ReadSSAFile(Name);
+        SSADataset(NumProfiles)=ReadSSAFile(Name,Format);
         SSADataset(NumProfiles).FileName=Files(i).name;
     end
 end

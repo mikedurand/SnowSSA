@@ -4,7 +4,8 @@
 
 DataDirectory='./ssa_data/';
 SkipList={''};
-SSADataset=ReadSSADataset(DataDirectory,SkipList);
+Format='2020';
+SSADataset=ReadSSADataset(DataDirectory,SkipList,Format);
 NODATA=-9999;
 for i=1:length(SSADataset)     
   plotSSA(SSADataset(i),NODATA)        
