@@ -18,7 +18,14 @@ set(gca,'FontSize',12)
 grid on
 xlabel('SSA [kg/m^2]')
 ylabel('Height [cm]')  
-TitleStr=['SnowEx 2020.  PitID: ' SSAData.Hdr.PitID '.  ' datestr(SSAData.Hdr.t,'dd mmm') '.'];
+
+if strcmpi(SSAData.Hdr.ProfileID,'n/a')
+   TitleStr=['SnowEx 2020.  ' SSAData.Hdr.PitID '.  ' SSAData.Hdr.Instrument '. ' datestr(SSAData.Hdr.t,'dd mmm') '.'];
+else
+   TitleStr=['SnowEx 2020.  ' SSAData.Hdr.PitID '.  ' SSAData.Hdr.Instrument '. ' SSAData.Hdr.ProfileID '. ' datestr(SSAData.Hdr.t,'dd mmm') '.'];
+end
+
+
 title(TitleStr)
 
 subplot(133)

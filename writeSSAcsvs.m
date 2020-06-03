@@ -33,6 +33,9 @@ for i=1:length(SSADataset)
                 end
             end            
         case '2020'
+            
+            fname17=fname;
+            fname=fname17to20(fname17);
     
             ProfileID=strtrim(SSADataset(i).Hdr.SampleID(length(SSADataset(i).Hdr.PitID)+1:end));
 
@@ -68,7 +71,7 @@ for i=1:length(SSADataset)
             j=length(DataToWrite);
 
             j=j+1;  DataToWrite{j}='#';
-            j=j+1;  DataToWrite{j}='# Sample signal (mV), Reflectance (%), Specific surface area (m^2/kg), Sample Top Height (cm), Do (mm), Comments';    
+            j=j+1;  DataToWrite{j}='# Sample signal (mV), Reflectance (%), Specific surface area (m^2/kg), Sample Top Height (cm), Deq (mm), Comments';    
 
             for k=1:length(SSADataset(i).SSA)
                 DataLine=[SSADataset(i).Voltage(k) SSADataset(i).Reflectance(k) SSADataset(i).SSA(k) SSADataset(i).Depth(k) SSADataset(i).Do(k)];
@@ -85,5 +88,37 @@ for i=1:length(SSADataset)
 end
 
 disp(['Done. Wrote ' num2str(length(SSADataset)) ' files.'])
+
+end
+
+function [fullname20]=fname17to20(fullname17)
+
+%function to convert the 2017 filename convention to the 2020 version
+filedata=regexp(fullname17,'/','split');
+namedata=regexp(filedata{3},'_','split');
+
+instrument=namedata{end}(1:end-4);
+pitID=namedata{2};
+
+if strcmpi(namedata{3}(1),'r')
+    MultipleProfiles=true;
+else
+    MultipleProfiles=false;
+end
+
+switch MultipleProfiles
+    case true
+        datedata=regexp(namedata{4},'T','split');
+        fname20=['SnowEx20_SSA_GM_' datedata{1} '_' pitID '_' namedata{3} '_' instrument '_v01.csv'];
+    case false
+        datedata=regexp(namedata{3},'T','split');
+        fname20=['SnowEx20_SSA_GM_' datedata{1} '_' pitID '_' instrument '_v01.csv'];
+end
+
+ 
+
+
+
+fullname20=[filedata{1} '/' filedata{2} '/' fname20];
 
 end
