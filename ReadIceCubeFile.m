@@ -52,6 +52,10 @@ while ~DataRead
             CalData.ObsV(i)=str2double(data{2});
             CalData.Ref(i)=str2double(data{3});
         end
+        fline=fgetl(fid); fline=fgetl(fid);
+        CalQualityLine=fgetl(fid);
+        data=regexp(CalQualityLine,'\t','split');
+        CalData.Quality=data{2};
         DataRead=true;
     end
 end
