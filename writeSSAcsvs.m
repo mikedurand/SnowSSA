@@ -34,14 +34,22 @@ for i=1:length(SSADataset)
             end            
         case '2020'
             
-            fname17=fname;
-            fname=fname17to20(fname17);
-    
-            ProfileID=strtrim(SSADataset(i).Hdr.SampleID(length(SSADataset(i).Hdr.PitID)+1:end));
+            data=regexp(fname,'/','split');
+            
+            if strcmp(data{3}(1:6),'SnowEx')
+                %then data are in 2020 format already
+                ProfileID=SSADataset(i).Hdr.ProfileID;
+            else
+                %then data are in 2017 format 
+                fname17=fname;
+                fname=fname17to20(fname17);                
+                ProfileID=strtrim(SSADataset(i).Hdr.SampleID(length(SSADataset(i).Hdr.PitID)+1:end));
 
-            if isempty(ProfileID)
-                ProfileID='N/A';
+                if isempty(ProfileID)
+                    ProfileID='N/A';
+                end                
             end
+                
 
         %     HdrLinesWrite=[SSADataset(i).HdrLines]';
             HdrLinesWrite{1}='# Location,Grand Mesa';

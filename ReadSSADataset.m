@@ -7,7 +7,7 @@ for i=1:length(Files)
         
     SkipThisFile=DoSkipChecks(Files(i),SkipList);
     
-    if i==107
+    if i==20
         stop=1;
     end
         
